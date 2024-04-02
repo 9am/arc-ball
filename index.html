@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="icon" href="./logo.svg" type="image/svg+xml">
+    <title>&lt;arc-ball&gt;</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: grid;
+            place-content: center;
+        }
+        arc-ball {
+            border: 2px solid;
+            width: 600px;
+            height: 400px;
+            display: grid;
+            place-content: center;
+            perspective: 400px;
+        }
+
+        .box {
+            --size: 100px;
+            --size-h: calc(var(--size) / 2);
+            width: var(--size);
+            aspect-ratio: 1;
+            transform-style: preserve-3d;
+            /*
+            transform: rotate3d(1, 1, 1, 45deg);
+            */
+        }
+        .face {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: inherit;
+            font-size: calc(var(--size) / 2);
+            color: white;
+        }
+        .front {
+            background: rgba(90, 90, 90, .7);
+            transform: translateZ(var(--size-h));
+        }
+        .back {
+            background: rgba(0, 210, 0, .7);
+            transform: rotateY(180deg) translateZ(var(--size-h));
+        }
+        .right {
+            background: rgba(210, 0, 0, .7);
+            transform: rotateY(90deg) translateZ(var(--size-h));
+        }
+        .left {
+            background: rgba(0, 0, 210, .7);
+            transform: rotateY(-90deg) translateZ(var(--size-h));
+        }
+        .top {
+            background: rgba(210, 210, 0, .7);
+            transform: rotateX(90deg) translateZ(var(--size-h));
+        }
+        .bottom {
+            background: rgba(210, 0, 210, .7);
+            transform: rotateX(-90deg) translateZ(var(--size-h));
+        }
+    </style>
+</head>
+<body>
+    <arc-ball>
+        <arc-ball-axis></arc-ball-axis>
+        <section class="box">
+          <div class="face front">1</div>
+          <div class="face back">2</div>
+          <div class="face right">3</div>
+          <div class="face left">4</div>
+          <div class="face top">5</div>
+          <div class="face bottom">6</div>
+        </section>
+    </arc-ball>
+    <script type="module" src="./src/index.js"></script>
+</body>
+</html>
