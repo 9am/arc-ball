@@ -1,4 +1,4 @@
-import { ArcBall, touchHandler } from './arcball';
+import { ArcBall, touchHandler } from './arcball.js';
 
 class Ball extends HTMLElement {
     #ball = null;
