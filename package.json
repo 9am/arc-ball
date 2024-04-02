@@ -1,7 +1,7 @@
 {
   "name": "arc-ball",
   "version": "0.0.1",
-  "description": "",
+  "description": "A small Web Component enables arcball 3D view for its children.",
   "keywords": [
     "web component",
     "custom element"
