@@ -34,9 +34,6 @@
             width: var(--size);
             aspect-ratio: 1;
             transform-style: preserve-3d;
-            /*
-            transform: rotate3d(1, 1, 1, 45deg);
-            */
         }
         .face {
             display: flex;
@@ -73,11 +70,62 @@
             background: rgba(210, 0, 210, .7);
             transform: rotateX(-90deg) translateZ(var(--size-h));
         }
+
+        .dot {
+            --position: translate(0);
+            --size: 20px;
+            transform-style: preserve-3d;
+            width: var(--size);
+            aspect-ratio: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            backface-visibility: inherit;
+            transform: var(--position);
+        }
+        .dot::before,
+        .dot::after {
+            content: attr(index);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            border-radius: 50%;
+            outline: 2px solid white;
+            font-size: calc(var(--size));
+            color: white;
+        }
+        .dot::after {
+            transform: translate(-50%, -50%) rotateX(90deg);
+        }
+
+        .dot[index="0"] {
+            --position: translate3d(100px, 0, 0);
+        }
+        .dot[index="1"] {
+            --position: translate3d(0, 100px, 0);
+        }
+        .dot[index="2"] {
+            --position: translate3d(0, 0, 100px);
+        }
+
     </style>
 </head>
 <body>
     <arc-ball>
         <arc-ball-axis></arc-ball-axis>
+        <arc-ball-stl></arc-ball-stl>
+        <!--
+        <div class="dot" index="0"></div>
+        <div class="dot" index="1"></div>
+        <div class="dot" index="2"></div>
+        -->
         <section class="box">
           <div class="face front">1</div>
           <div class="face back">2</div>
@@ -88,5 +136,9 @@
         </section>
     </arc-ball>
     <script type="module" src="./src/index.js"></script>
+    <script type="module">
+        import { stl } from './model/m1.js';
+        document.querySelector('arc-ball-stl').install(stl);
+    </script>
 </body>
 </html>

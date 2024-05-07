@@ -1,4 +1,5 @@
 import { ArcBall, touchHandler } from './arcball.js';
+import { createObject } from './stl.js';
 
 class Ball extends HTMLElement {
     #ball = null;
@@ -8,36 +9,42 @@ class Ball extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        const css = new CSSStyleSheet();
+        css.replaceSync(this.#getCSS());
+        this.shadowRoot.adoptedStyleSheets = [css];
         this.shadowRoot.append(this.#getTemplate());
         this.#ball = this.shadowRoot.querySelector('#ball');
+    }
+
+    #getCSS() {
+        return `
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            :host {
+                display: grid;
+                place-content: center;
+                cursor: grab;
+            }
+            :host(:active) {
+                cursor: grabbing;
+            }
+            #ball {
+                position: relative;
+                grid-area: 1 / 1;
+                transform-style: preserve-3d;
+                transform: var(--scale3d, scale(1)) var(--matrix3d, matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
+            }
+        `;
     }
 
     #getTemplate() {
         const tmp = document.createElement('template');
         tmp.innerHTML = `
-            <style>
-                *,
-                *::before,
-                *::after {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
-                :host {
-                    display: grid;
-                    place-content: center;
-                    cursor: grab;
-                }
-                :host(:active) {
-                    cursor: grabbing;
-                }
-                #ball {
-                    position: relative;
-                    grid-area: 1 / 1;
-                    transform-style: preserve-3d;
-                    transform: var(--scale3d, scale(1)) var(--matrix3d, matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
-                }
-            </style>
             <div id="ball" part="ball"><slot></slot></div>
         `;
         return tmp.content.cloneNode(true);
@@ -101,97 +108,102 @@ class BallAxis extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        const css = new CSSStyleSheet();
+        css.replaceSync(this.#getCSS());
+        this.shadowRoot.adoptedStyleSheets = [css];
         this.shadowRoot.append(this.#getTemplate());
+    }
+
+    #getCSS() {
+        return `
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            :host {
+                --r: 5px;
+                --len: 200px;
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transform-style: preserve-3d;
+                font-size: calc(var(--r) * 2);
+            }
+            ol {
+                --r-h: calc(var(--r) / 2);
+                position: relative;
+                width: var(--len);
+                height: var(--r);
+                transform-style: preserve-3d;
+                list-style: none;
+            }
+            li,
+            li::before,
+            li::after,
+            i,
+            i::before,
+            i::after {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--color);
+                transform-style: preserve-3d;
+                backface-visibility: visible;
+            }
+            i,
+            li {
+                --rotate: rotateX(0);
+                --x: calc(var(--len) / 2);
+                --y: 0px;
+                --z: 0px;
+                --dx: 0px;
+                --dy: 0px;
+                --dz: 0px;
+                transform-origin: left center;
+                transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy)), calc(var(--z) + var(--dz))) var(--rotate);
+                text-align: right;
+                line-height: var(--r);
+                background: unset;
+            }
+            i {
+                transform: rotateX(90deg);
+            }
+            i::before,
+            li::before {
+                transform: translateZ(calc(-1 * var(--r-h)));
+            }
+            i::after,
+            li::after {
+                transform: translateZ(calc(1 * var(--r-h)));
+            }
+            li#x {
+                --color: rgba(255 0 0 / .2);
+                --dx: calc(-1 * var(--r-h));
+            }
+            li#y {
+                --color: rgba(0 255 0 / .2);
+                --rotate: rotateZ(90deg);
+                --dy: calc(-1 * var(--r-h));
+            }
+            li#z {
+                --color: rgba(0 0 255 / .2);
+                --rotate: rotateY(-90deg);
+                --dz: calc(-1 * var(--r-h));
+            }
+        `;
     }
 
     #getTemplate() {
         const tmp = document.createElement('template');
         tmp.innerHTML = `
-            <style>
-                *,
-                *::before,
-                *::after {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
-                :host {
-                    --r: 5px;
-                    --len: 200px;
-                    display: block;
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    transform-style: preserve-3d;
-                    font-size: calc(var(--r) * 2);
-                }
-                ol {
-                    --r-h: calc(var(--r) / 2);
-                    position: relative;
-                    width: var(--len);
-                    height: var(--r);
-                    transform-style: preserve-3d;
-                    list-style: none;
-                }
-                li,
-                li::before,
-                li::after,
-                i,
-                i::before,
-                i::after {
-                    content: '';
-                    display: block;
-                    position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: var(--color);
-                    transform-style: preserve-3d;
-                    backface-visibility: visible;
-                }
-                i,
-                li {
-                    --rotate: rotateX(0);
-                    --x: calc(var(--len) / 2);
-                    --y: 0px;
-                    --z: 0px;
-                    --dx: 0px;
-                    --dy: 0px;
-                    --dz: 0px;
-                    transform-origin: left center;
-                    transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy)), calc(var(--z) + var(--dz))) var(--rotate);
-                    text-align: right;
-                    line-height: var(--r);
-                    background: unset;
-                }
-                i {
-                    transform: rotateX(90deg);
-                }
-                i::before,
-                li::before {
-                    transform: translateZ(calc(-1 * var(--r-h)));
-                }
-                i::after,
-                li::after {
-                    transform: translateZ(calc(1 * var(--r-h)));
-                }
-                li#x {
-                    --color: rgba(255 0 0 / .2);
-                    --rotate: rotateX(0);
-                    --dx: calc(-1 * var(--r-h));
-                }
-                li#y {
-                    --color: rgba(0 255 0 / .2);
-                    --rotate: rotateY(90deg);
-                    --dz: calc(1 * var(--r-h));
-                }
-                li#z {
-                    --color: rgba(0 0 255 / .2);
-                    --rotate: rotateZ(90deg);
-                    --dy: calc(-1 * var(--r-h));
-                }
-            </style>
             <ol>
                 <li id="x"><i>X</i></li>
                 <li id="y"><i>Y</i></li>
@@ -199,6 +211,68 @@ class BallAxis extends HTMLElement {
             </ol>
         `;
         return tmp.content.cloneNode(true);
+    }
+
+    connectedCallback() {}
+
+    disconnectedCallback() {}
+}
+
+class BallSTL extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        const css = new CSSStyleSheet();
+        css.replaceSync(this.#getCSS());
+        this.shadowRoot.adoptedStyleSheets = [css];
+        this.shadowRoot.append(this.#getTemplate());
+    }
+
+    #getCSS() {
+        return `
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            :host {
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transform-style: preserve-3d;
+            }
+            .tri {
+                display: block;
+                width: var(--w, 10px);
+                height: var(--h, 10px);
+                outline: 2px solid black;
+                background: rgba(0 0 0 / .3);
+                background: #aaa;
+                position: absolute;
+                top: 0;
+                left: 0;
+                backface-visibility: inherit;
+                backface-visibility: hidden;
+                transform-origin: var(--originX) 0 0;
+                transform: translateX(calc(var(--originX) * -1)) var(--matrix3d);
+                clip-path: var(--clip, unset);
+                transform-style: preserve-3d;
+            }
+        `;
+    }
+
+    #getTemplate() {
+        const tmp = document.createElement('template');
+        tmp.innerHTML = ``;
+        return tmp.content.cloneNode(true);
+    }
+
+    install(stl = []) {
+        this.shadowRoot.replaceChildren(createObject(stl));
     }
 
     connectedCallback() {}
@@ -214,4 +288,8 @@ if (window && !window.customElements.get('arc-ball')) {
     window.customElements.define('arc-ball', Ball);
 }
 
-export { Ball, BallAxis };
+if (window && !window.customElements.get('arc-ball-stl')) {
+    window.customElements.define('arc-ball-stl', BallSTL);
+}
+
+export { Ball, BallAxis, BallSTL };

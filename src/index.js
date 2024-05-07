@@ -1,1 +1,1 @@
-export { Ball, BallAxis } from './element.js';
+export { Ball, BallAxis, BallSTL } from './element.js';

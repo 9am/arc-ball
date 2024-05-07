@@ -1,101 +1,16 @@
-const mat3Mul = (a, b) => {
-    const res = new Array(9);
-    res[0] = a[0] * b[0] + a[1] * b[3] + a[2] * b[6];
-    res[1] = a[0] * b[1] + a[1] * b[4] + a[2] * b[7];
-    res[2] = a[0] * b[2] + a[1] * b[5] + a[2] * b[8];
-
-    res[3] = a[3] * b[0] + a[4] * b[3] + a[5] * b[6];
-    res[4] = a[3] * b[1] + a[4] * b[4] + a[5] * b[7];
-    res[5] = a[3] * b[2] + a[4] * b[5] + a[5] * b[8];
-
-    res[6] = a[6] * b[0] + a[7] * b[3] + a[8] * b[6];
-    res[7] = a[6] * b[1] + a[7] * b[4] + a[8] * b[7];
-    res[8] = a[6] * b[2] + a[7] * b[5] + a[8] * b[8];
-
-    return res;
-};
-
-// Rodrigues' rotation formula
-//
-// V(rot) = I + sin(a) . K + (1 - cos(a)) . K^2
-//
-// I = [
-//  1 0 0
-//  0 1 0
-//  0 0 1
-// ]
-//
-// K = [
-//  0  -z  y
-//  z   0  x
-//  -y  x  0
-// ]
-const rotAaMat3 = (axis, angle) => {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
-
-    const x = axis[0];
-    const y = axis[1];
-    const z = axis[2];
-
-    return [
-        x * x * (1 - c) + c,
-        x * y * (1 - c) - z * s,
-        x * z * (1 - c) + y * s,
-
-        y * x * (1 - c) + z * s,
-        y * y * (1 - c) + c,
-        y * z * (1 - c) - x * s,
-
-        z * x * (1 - c) - y * s,
-        z * y * (1 - c) + x * s,
-        z * z * (1 - c) + c,
-    ];
-};
-
-const vecLenSq = (a) => {
-    return vecDot(a, a);
-};
-
-const vecCross = (a, b) => {
-    return [
-        a[1] * b[2] - a[2] * b[1],
-        -a[0] * b[2] + a[2] * b[0],
-        a[0] * b[1] - a[1] * b[0],
-    ];
-};
-
-const vecDot = (a, b) => {
-    let r = 0;
-    for (let i = 0; i < a.length; i++) r += a[i] * b[i];
-    return r;
-};
-
-const vecSub = (a, b) => {
-    const r = new Array(a.length);
-    for (let i = 0; i < a.length; i++) r[i] = a[i] - b[i];
-    return r;
-};
-const vecNorm = (a) => {
-    let d = 0;
-    for (let i = 0; i < a.length; i++) d += a[i] * a[i];
-
-    d = 1.0 / Math.sqrt(d);
-    const r = new Array(a.length);
-    if (d < 0.00000001) {
-        for (let i = 0; i < a.length; i++) r[i] = 0;
-        return r;
-    }
-
-    for (let i = 0; i < a.length; i++) r[i] = a[i] * d;
-    return r;
-};
-const vecLen = (a) => {
-    let d = 0;
-    for (let i = 0; i < a.length; i++) d += a[i] * a[i];
-
-    return Math.sqrt(d);
-};
+import {
+    vecDot,
+    vecNorm,
+    vecSub,
+    vecLen,
+    vecCross,
+    vecLenSq,
+    mat3Mul,
+    mat3Transpose,
+    mat3Invert,
+    rotAaMat3,
+    BAR,
+} from './util.js';
 
 class ArcBall {
     #callback;
