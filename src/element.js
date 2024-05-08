@@ -1,5 +1,6 @@
 import { ArcBall, touchHandler } from './arcball.js';
 import { createObject } from './stl.js';
+import { mat3Invert, mat3Transpose } from './util.js';
 
 class Ball extends HTMLElement {
     #ball = null;
@@ -63,6 +64,7 @@ class Ball extends HTMLElement {
             '--matrix3d',
             `matrix3d(${[a1, b1, c1]},0,${[a2, b2, c2]},0,${[a3, b3, c3]},0,0,0,0,1)`
         );
+        this.dispatchEvent(new CustomEvent('UPDATE', { detail: { matrix } }));
     }
 
     connectedCallback() {
@@ -124,20 +126,26 @@ class BallAxis extends HTMLElement {
                 box-sizing: border-box;
             }
             :host {
-                --r: 5px;
-                --len: 200px;
+                --size: 200px;
+                --size-label: 20px;
+                --r: 2px;
+                --invert-matrix: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
                 display: block;
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 transform-style: preserve-3d;
-                font-size: calc(var(--r) * 2);
+                width: var(--size);
+                aspect-ratio: 1;
+                display: grid;
+                place-content: center;
+                justify-content: stretch;
             }
             ol {
                 --r-h: calc(var(--r) / 2);
                 position: relative;
-                width: var(--len);
+                width: 100%;
                 height: var(--r);
                 transform-style: preserve-3d;
                 list-style: none;
@@ -148,28 +156,20 @@ class BallAxis extends HTMLElement {
             i,
             i::before,
             i::after {
+                --stop: calc(50% - var(--r-h));
                 content: '';
                 display: block;
                 position: absolute;
                 inset: 0;
                 width: 100%;
                 height: 100%;
-                background: var(--color);
+                background: linear-gradient(to right, transparent var(--stop), var(--color) var(--stop));
                 transform-style: preserve-3d;
                 backface-visibility: visible;
             }
             i,
             li {
-                --rotate: rotateX(0);
-                --x: calc(var(--len) / 2);
-                --y: 0px;
-                --z: 0px;
-                --dx: 0px;
-                --dy: 0px;
-                --dz: 0px;
-                transform-origin: left center;
-                transform: translate3d(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy)), calc(var(--z) + var(--dz))) var(--rotate);
-                text-align: right;
+                transform: var(--rotate, rotateX(0));
                 line-height: var(--r);
                 background: unset;
             }
@@ -186,17 +186,44 @@ class BallAxis extends HTMLElement {
             }
             li#x {
                 --color: rgba(255 0 0 / .2);
-                --dx: calc(-1 * var(--r-h));
             }
             li#y {
                 --color: rgba(0 255 0 / .2);
                 --rotate: rotateZ(90deg);
-                --dy: calc(-1 * var(--r-h));
             }
             li#z {
                 --color: rgba(0 0 255 / .2);
                 --rotate: rotateY(-90deg);
-                --dz: calc(-1 * var(--r-h));
+            }
+
+            code {
+                --reset-translate: translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                transform: var(--reset-translate) var(--reset-rotation) var(--invert-matrix);
+
+                display: block;
+                width: var(--size-label);
+                line-height: var(--size-label);
+                aspect-ratio: 1;
+                border-radius: 50%;
+                outline: 2px solid rgba(255 255 255 / .8);
+                text-align: center;
+                font-size: calc(var(--size-label) / 1.5);
+                background: var(--color);
+            }
+            code:last-child {
+                --reset-translate: translate(50%, -50%);
+                right: 0;
+            }
+            li#x code {
+                --reset-rotation: rotateX(0);
+            }
+            li#y code {
+                --reset-rotation: rotateZ(-90deg);
+            }
+            li#z code {
+                --reset-rotation: rotateY(90deg);
             }
         `;
     }
@@ -205,17 +232,40 @@ class BallAxis extends HTMLElement {
         const tmp = document.createElement('template');
         tmp.innerHTML = `
             <ol>
-                <li id="x"><i>X</i></li>
-                <li id="y"><i>Y</i></li>
-                <li id="z"><i>Z</i></li>
+                <li id="x"><code>-X</code><i></i><code>X</code></li>
+                <li id="y"><code>-Y</code><i></i><code>Y</code></li>
+                <li id="z"><code>-Z</code><i></i><code>Z</code></li>
             </ol>
         `;
         return tmp.content.cloneNode(true);
     }
 
-    connectedCallback() {}
+    #onUpdate = (evt) => {
+        const invert = mat3Transpose(mat3Invert(evt.detail.matrix));
+        const mat4 = [
+            ...invert.slice(0, 3),
+            0,
+            ...invert.slice(3, 6),
+            0,
+            ...invert.slice(6, 9),
+            0,
+            0,
+            0,
+            0,
+            1,
+        ];
+        this.style.setProperty('--invert-matrix', `matrix3d(${mat4})`);
+    };
 
-    disconnectedCallback() {}
+    connectedCallback() {
+        const ball = this.closest('arc-ball');
+        ball?.addEventListener('UPDATE', this.#onUpdate);
+    }
+
+    disconnectedCallback() {
+        const ball = this.closest('arc-ball');
+        ball?.removeEventListener('UPDATE', this.#onUpdate);
+    }
 }
 
 class BallSTL extends HTMLElement {
@@ -249,7 +299,6 @@ class BallSTL extends HTMLElement {
                 display: block;
                 width: var(--w, 10px);
                 height: var(--h, 10px);
-                outline: 2px solid black;
                 position: absolute;
                 top: 0;
                 left: 0;
