@@ -17,6 +17,8 @@ import {
     BAR,
 } from './util.js';
 
+const LIGHT = vecNorm([-1, 1, -1]);
+
 const rotMat3FromTo = (a, b) => {
     let axis = vecNorm(vecCross(a, b));
     const dot = vecDot(a, b);
@@ -72,7 +74,7 @@ const toXY = (before, normal) => {
         after = before.map((p) => trans(p, mat));
     }
 
-    return [mat, after];
+    return [mat, after, nor];
 };
 
 const invert = (root, mat3) => {
@@ -101,7 +103,7 @@ export const createTriangle = (points = [], normal, debug = false) => {
         return [x - rx, y - ry, z - rz];
     });
 
-    const [toXYMat3, xyPoints] = toXY(rootPoints, normal);
+    const [toXYMat3, xyPoints, nor] = toXY(rootPoints, normal);
     const invertMat4 = invert(root, toXYMat3);
 
     const [p, p1, p2] = xyPoints;
@@ -128,6 +130,9 @@ export const createTriangle = (points = [], normal, debug = false) => {
         });
     }
 
+    // light
+    const light = Math.acos(vecDot(nor, LIGHT)) / Math.PI;
+
     /* triangle surface */
     const tri = document.createElement('i');
     tri.className = 'tri';
@@ -136,6 +141,7 @@ export const createTriangle = (points = [], normal, debug = false) => {
     tri.style.setProperty('--clip', `${clip}`);
     tri.style.setProperty('--originX', `${c0x}%`);
     tri.style.setProperty('--matrix3d', `matrix3d(${invertMat4})`);
+    tri.style.setProperty('--light', `${light}`);
     return tri;
 };
 

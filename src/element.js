@@ -250,17 +250,15 @@ class BallSTL extends HTMLElement {
                 width: var(--w, 10px);
                 height: var(--h, 10px);
                 outline: 2px solid black;
-                background: rgba(0 0 0 / .3);
-                background: #aaa;
                 position: absolute;
                 top: 0;
                 left: 0;
-                backface-visibility: inherit;
                 backface-visibility: hidden;
                 transform-origin: var(--originX) 0 0;
                 transform: translateX(calc(var(--originX) * -1)) var(--matrix3d);
                 clip-path: var(--clip, unset);
                 transform-style: preserve-3d;
+                background: hsl(0 0% calc(var(--light) * 100%) / 1);
             }
         `;
     }
