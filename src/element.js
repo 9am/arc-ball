@@ -38,7 +38,7 @@ class Ball extends HTMLElement {
                 position: relative;
                 grid-area: 1 / 1;
                 transform-style: preserve-3d;
-                transform: var(--scale3d, scale(1)) var(--matrix3d, matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
+                transform: var(--scale3d, scale(1)) var(--rotate3d, rotate(0));
             }
         `;
     }
@@ -46,7 +46,7 @@ class Ball extends HTMLElement {
     #getTemplate() {
         const tmp = document.createElement('template');
         tmp.innerHTML = `
-            <div id="ball" part="ball"><slot></slot></div>
+            <div id="ball" part="ball"><slot></slot></div><slot name="escape"></slot>
         `;
         return tmp.content.cloneNode(true);
     }
@@ -60,8 +60,8 @@ class Ball extends HTMLElement {
 
     repaint(matrix) {
         const [a1, a2, a3, b1, b2, b3, c1, c2, c3] = matrix;
-        this.#ball.style.setProperty(
-            '--matrix3d',
+        this.style.setProperty(
+            '--rotate3d',
             `matrix3d(${[a1, b1, c1]},0,${[a2, b2, c2]},0,${[a3, b3, c3]},0,0,0,0,1)`
         );
         this.dispatchEvent(new CustomEvent('UPDATE', { detail: { matrix } }));
@@ -87,7 +87,7 @@ class Ball extends HTMLElement {
             wheel: (e) => {
                 let scale = this.#arcball.scale;
                 scale += e.deltaY * -0.001;
-                scale = Math.min(Math.max(0.25, scale), 4);
+                scale = Math.min(Math.max(0.2, scale), 4);
                 this.#ball.style.setProperty(
                     '--scale3d',
                     `scale3d(${scale},${scale},${scale})`
@@ -126,21 +126,19 @@ class BallAxis extends HTMLElement {
                 box-sizing: border-box;
             }
             :host {
-                --size: 200px;
                 --size-label: 20px;
                 --r: 2px;
-                --invert-matrix: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
-                display: block;
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 transform-style: preserve-3d;
-                width: var(--size);
+                width: var(--size, 200px);
                 aspect-ratio: 1;
                 display: grid;
                 place-content: center;
                 justify-content: stretch;
+                padding: calc(var(--size-label) / 2) !important;
             }
             ol {
                 --r-h: calc(var(--r) / 2);
@@ -149,6 +147,7 @@ class BallAxis extends HTMLElement {
                 height: var(--r);
                 transform-style: preserve-3d;
                 list-style: none;
+                color: white;
             }
             li,
             li::before,
@@ -185,14 +184,14 @@ class BallAxis extends HTMLElement {
                 transform: translateZ(calc(1 * var(--r-h)));
             }
             li#x {
-                --color: rgba(255 0 0 / .2);
+                --color: hsl(10deg 60% 50%);
             }
             li#y {
-                --color: rgba(0 255 0 / .2);
+                --color: hsl(100deg 60% 50%);
                 --rotate: rotateZ(90deg);
             }
             li#z {
-                --color: rgba(0 0 255 / .2);
+                --color: hsl(210deg 60% 50%);
                 --rotate: rotateY(-90deg);
             }
 
@@ -200,21 +199,23 @@ class BallAxis extends HTMLElement {
                 --reset-translate: translate(-50%, -50%);
                 position: absolute;
                 top: 50%;
-                transform: var(--reset-translate) var(--reset-rotation) var(--invert-matrix);
+                transform: var(--reset-translate) var(--reset-rotation) var(--rotate3d-invert, rotate(0));
 
                 display: block;
                 width: var(--size-label);
                 line-height: var(--size-label);
                 aspect-ratio: 1;
                 border-radius: 50%;
-                outline: 2px solid rgba(255 255 255 / .8);
+                outline: 2px solid white;
                 text-align: center;
                 font-size: calc(var(--size-label) / 1.5);
                 background: var(--color);
+                opacity: 0.3;
             }
             code:last-child {
                 --reset-translate: translate(50%, -50%);
                 right: 0;
+                opacity: 1;
             }
             li#x code {
                 --reset-rotation: rotateX(0);
@@ -254,16 +255,16 @@ class BallAxis extends HTMLElement {
             0,
             1,
         ];
-        this.style.setProperty('--invert-matrix', `matrix3d(${mat4})`);
+        this.style.setProperty('--rotate3d-invert', `matrix3d(${mat4})`);
     };
 
     connectedCallback() {
-        const ball = this.closest('arc-ball');
+        const ball = this.closest('arc-ball:not([slot=escape])');
         ball?.addEventListener('UPDATE', this.#onUpdate);
     }
 
     disconnectedCallback() {
-        const ball = this.closest('arc-ball');
+        const ball = this.closest('arc-ball:not(slot=escape)');
         ball?.removeEventListener('UPDATE', this.#onUpdate);
     }
 }
@@ -320,6 +321,10 @@ class BallSTL extends HTMLElement {
 
     install(stl = []) {
         this.shadowRoot.replaceChildren(createObject(stl));
+    }
+
+    uninstall() {
+        this.shadowRoot.replaceChildren();
     }
 
     connectedCallback() {}

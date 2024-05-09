@@ -150,7 +150,7 @@ export const createObject = (surfaces = []) => {
     const len = surfaces.length;
     for (let i = 0; i < len; i += 1) {
         const { v, n } = surfaces[i];
-        frag.appendChild(createTriangle(v));
+        frag.appendChild(createTriangle(v, n));
     }
     return frag;
 };

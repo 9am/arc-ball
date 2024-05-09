@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "A small Web Component enables arcball 3D view for its children.",
   "keywords": [
-    "web component",
     "arcball",
+    "3d",
+    "perspective",
+    "css transform",
+    "web component",
     "custom element"
   ],
   "files": [

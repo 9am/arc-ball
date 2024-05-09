@@ -18,11 +18,15 @@
     </p>
 </div>
 
-Inspired by wonderful demos made by [Bartosz Ciechanowski](https://ciechanow.ski/), this is a nice little tool for someone who like to create 3D models with CSS transform.
+Inspired by wonderful demos[^1] made by Bartosz Ciechanowski, and a great paper[^2] written by Ken Shoemake, this is a nice little tool for someone who like to create 3D models with CSS transform.
 
 ## Demo
 
 Go to the [Home page](https://9am.github.io/arc-ball/).
+
+<img width="32%" alt="arc-ball-demo-0" src="https://github.com/9am/arc-ball/assets/1435457/b7b86f36-229f-4a0b-a8a7-17d699b49e79" />
+<img width="32%" alt="arc-ball-demo-2" src="https://github.com/9am/arc-ball/assets/1435457/f317ecd2-b6e0-43ff-8f74-8ab6e878b321" />
+<img width="32%" alt="arc-ball-demo-1" src="https://github.com/9am/arc-ball/assets/1435457/66f0ed72-934e-40d0-8f7d-f67140cdfde8" />
 
 ## Usage
 
@@ -38,9 +42,26 @@ Include via CDN(e.g. unpkg) or Download a copy
 
 ```html
 <arc-ball>
-    <!-- built-in xyz axis indicator-->
+    <!-- built-in xyz axis indicator -->
     <arc-ball-axis></arc-ball-axis>
 </arc-ball>
+```
+
+```html
+<arc-ball>
+    <!-- this'll not include by the arcball -->
+    <section slot="escape">escape the 3d control</section>
+</arc-ball>
+```
+
+```html
+<arc-ball>
+    <!-- built-in stl renderer -->
+    <arc-ball-stl></arc-ball-stl>
+</arc-ball>
+<script>
+    $('arc-ball-stl').install(/* stl data */);
+</script>
 ```
 
 <details>
@@ -69,3 +90,6 @@ npm install @9am/arc-ball
 
 ## License
 [MIT](LICENSE)
+
+[^1]: [Bartosz Ciechanowski Blog](https://ciechanow.ski/)
+[^2]: [ARCBALL: A User Interface for Specifying Three-Dimensional Orientation Using a Mouse](https://graphicsinterface.org/wp-content/uploads/gi1992-18.pdf)
