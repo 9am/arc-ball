@@ -1,0 +1,32 @@
+.eyeball {
+    --num: 12;
+    --color: darkblue;
+    --size: 150px;
+    --size-h: calc(var(--size) / 2);
+    --stop: 60deg;
+    width: var(--size);
+    aspect-ratio: 1;
+    position: relative;
+    transform-style: preserve-3d;
+}
+.slice {
+    --offset: calc((180deg - var(--stop)) / var(--num));
+    --deg: calc(var(--stop) + var(--offset) * var(--i));
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    font-size: 0;
+    background: var(--color);
+    transform: translateZ(calc(cos(var(--deg)) * var(--size-h))) scale(sin(var(--deg)));
+    border-radius: 50%;
+    backslice-visibility: inherit;
+}
+.slice:nth-child(odd) {
+    background: white;
+}
+.slice:last-child {
+    --i: -1;
+    filter: drop-shadow(0 0 10px var(--color));
+    transform: translateZ(calc(cos(var(--deg)) * var(--size-h))) scale(sin(var(--deg)))
+        scale(0.4);
+}

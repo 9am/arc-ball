@@ -1,7 +1,6 @@
 import {
     vecDot,
     vecNorm,
-    vecSub,
     vecLen,
     vecCross,
     vecLenSq,
@@ -51,8 +50,8 @@ const trans = (p, m) => {
 };
 
 const toXY = (before, normal) => {
-    const [b0, b1, b2] = before;
-    const nor = normal ?? vecNorm(vecCross(vecSub(b1, b0), vecSub(b2, b0)));
+    const [, b1, b2] = before;
+    const nor = normal ?? vecNorm(vecCross(b1, b2));
     // align nor to AXIS_Z
     let mat1 = rotMat3FromTo(nor, AXIS_Z);
 
@@ -61,8 +60,8 @@ const toXY = (before, normal) => {
     });
 
     // align l0_1 to AXIS_X
-    const [n0, n1] = next;
-    const l0_1 = vecNorm(vecSub(n1, n0));
+    const [, n1] = next;
+    const l0_1 = vecNorm(n1);
     const mat2 = rotMat3FromTo(l0_1, AXIS_X);
 
     let mat = mat3Mul(mat2, mat1);
@@ -106,7 +105,7 @@ export const createTriangle = (points = [], normal, debug = false) => {
     const [toXYMat3, xyPoints, nor] = toXY(rootPoints, normal);
     const invertMat4 = invert(root, toXYMat3);
 
-    const [p, p1, p2] = xyPoints;
+    const [, p1, p2] = xyPoints;
     const [p1x, p1y] = p1;
     const [p2x, p2y] = p2;
 

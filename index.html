@@ -12,6 +12,11 @@
             padding: 0;
             box-sizing: border-box;
         }
+        ul,
+        ol,
+        li {
+            list-style: none;
+        }
         body {
             display: grid;
             gap: 2em;
@@ -86,7 +91,6 @@
             background: rgba(210, 0, 210, .7);
             transform: rotateX(-90deg) translateZ(var(--size-h));
         }
-
         arc-ball[slot=escape] {
             pointer-events: none;
             width: 100px;
@@ -98,8 +102,9 @@
             border: unset;
             --size: 100px;
         }
-
     </style>
+    <link href="./model/tagcloud.css" rel="stylesheet" />
+    <link href="./model/eyeball.css" rel="stylesheet" />
 </head>
 <body>
     <a href="//github.com/9am/arc-ball"><img src="./logo.svg" alt="arc-ball-logo" title="arc-ball-logo" width="140px" height="140px" /></a>
@@ -123,6 +128,64 @@
           <div class="face top">5</div>
           <div class="face bottom">6</div>
         </section>
+        <arc-ball slot="escape">
+            <arc-ball-axis></arc-ball-axis>
+        </arc-ball>
+    </arc-ball>
+    <arc-ball>
+        <ol class="tagcloud">
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+          <li class="tag"></li>
+        </ol>
+        <arc-ball slot="escape">
+            <arc-ball-axis></arc-ball-axis>
+        </arc-ball>
+    </arc-ball>
+    <arc-ball>
+        <ol class="eyeball">
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+          <li class="slice"></li>
+        </ol>
         <arc-ball slot="escape">
             <arc-ball-axis></arc-ball-axis>
         </arc-ball>

@@ -1,6 +1,5 @@
 import { ArcBall, touchHandler } from './arcball.js';
 import { createObject } from './stl.js';
-import { mat3Invert, mat3Transpose } from './util.js';
 
 class Ball extends HTMLElement {
     #ball = null;
@@ -63,6 +62,10 @@ class Ball extends HTMLElement {
         this.style.setProperty(
             '--rotate3d',
             `matrix3d(${[a1, b1, c1]},0,${[a2, b2, c2]},0,${[a3, b3, c3]},0,0,0,0,1)`
+        );
+        this.style.setProperty(
+            '--rotate3d-transpose',
+            `matrix3d(${[a1, a2, a3]},0,${[b1, b2, b3]},0,${[c1, c2, c3]},0,0,0,0,1)`
         );
         this.dispatchEvent(new CustomEvent('UPDATE', { detail: { matrix } }));
     }
@@ -199,7 +202,7 @@ class BallAxis extends HTMLElement {
                 --reset-translate: translate(-50%, -50%);
                 position: absolute;
                 top: 50%;
-                transform: var(--reset-translate) var(--reset-rotation) var(--rotate3d-invert, rotate(0));
+                transform: var(--reset-translate) var(--reset-rotation) var(--rotate3d-transpose, rotate(0));
 
                 display: block;
                 width: var(--size-label);
@@ -241,32 +244,9 @@ class BallAxis extends HTMLElement {
         return tmp.content.cloneNode(true);
     }
 
-    #onUpdate = (evt) => {
-        const invert = mat3Transpose(mat3Invert(evt.detail.matrix));
-        const mat4 = [
-            ...invert.slice(0, 3),
-            0,
-            ...invert.slice(3, 6),
-            0,
-            ...invert.slice(6, 9),
-            0,
-            0,
-            0,
-            0,
-            1,
-        ];
-        this.style.setProperty('--rotate3d-invert', `matrix3d(${mat4})`);
-    };
+    connectedCallback() {}
 
-    connectedCallback() {
-        const ball = this.closest('arc-ball:not([slot=escape])');
-        ball?.addEventListener('UPDATE', this.#onUpdate);
-    }
-
-    disconnectedCallback() {
-        const ball = this.closest('arc-ball:not(slot=escape)');
-        ball?.removeEventListener('UPDATE', this.#onUpdate);
-    }
+    disconnectedCallback() {}
 }
 
 class BallSTL extends HTMLElement {
