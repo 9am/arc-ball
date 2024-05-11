@@ -38,6 +38,7 @@ class Ball extends HTMLElement {
                 grid-area: 1 / 1;
                 transform-style: preserve-3d;
                 transform: var(--scale3d, scale(1)) var(--rotate3d, rotate(0));
+                will-change: transform;
             }
         `;
     }

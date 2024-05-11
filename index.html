@@ -18,9 +18,10 @@
             list-style: none;
         }
         body {
+            --gap: 2em;
             display: grid;
-            gap: 2em;
-            padding: 2em;
+            gap: var(--gap);
+            padding: var(--gap);
             margin: 0 auto;
             width: min(960px, 100%);
             text-align: center;
@@ -102,6 +103,14 @@
             border: unset;
             --size: 100px;
         }
+        @media screen and (max-width: 960px) {
+            body {
+                --gap: 3em;
+            }
+            arc-ball:not([slot]) {
+                margin-bottom: var(--gap);
+            }
+        }
     </style>
     <link href="./model/tagcloud.css" rel="stylesheet" />
     <link href="./model/eyeball.css" rel="stylesheet" />
@@ -112,12 +121,6 @@
     <arc-ball>
         <h3><pre>3D</pre><pre>EVERYTHING</pre><pre>INSIDE</pre></h3>
         <arc-ball-axis></arc-ball-axis>
-    </arc-ball>
-    <arc-ball>
-        <arc-ball-stl></arc-ball-stl>
-        <arc-ball slot="escape">
-            <arc-ball-axis></arc-ball-axis>
-        </arc-ball>
     </arc-ball>
     <arc-ball>
         <section class="box">
@@ -186,6 +189,12 @@
           <li class="slice"></li>
           <li class="slice"></li>
         </ol>
+        <arc-ball slot="escape">
+            <arc-ball-axis></arc-ball-axis>
+        </arc-ball>
+    </arc-ball>
+    <arc-ball>
+        <arc-ball-stl></arc-ball-stl>
         <arc-ball slot="escape">
             <arc-ball-axis></arc-ball-axis>
         </arc-ball>
