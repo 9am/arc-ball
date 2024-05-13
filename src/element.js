@@ -251,6 +251,14 @@ class BallAxis extends HTMLElement {
 }
 
 class BallSTL extends HTMLElement {
+    static observedAttributes = ['src'];
+
+    static loadSTL(src = '') {
+        return fetch(src, { headers: { 'Content-Type': 'application/json' } }).then(
+            (res) => res.json()
+        );
+    }
+
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -298,6 +306,25 @@ class BallSTL extends HTMLElement {
         const tmp = document.createElement('template');
         tmp.innerHTML = ``;
         return tmp.content.cloneNode(true);
+    }
+
+    async attributeChangedCallback(name, prev, next) {
+        if (prev === next) {
+            return;
+        }
+        switch (name) {
+            case 'src': {
+                try {
+                    const stl = await BallSTL.loadSTL(next);
+                    this.install(stl);
+                } catch (err) {
+                    console.error(err);
+                }
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     install(stl = []) {

@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/9am/arc-ball/main/logo.svg" alt="arc-ball-logo" width="140" height="140" />
     <h1>&lt;arc-ball&gt;</h1>
-	<p>A small Web Component enables arcball 3D view for its children.</p>
+	<p>A small Web Component enables arcball 3D view for everything inside.</p>
     <p>
         <a href="https://github.com/9am/arc-ball/blob/main/LICENSE">
             <img alt="GitHub" src="https://img.shields.io/github/license/9am/arc-ball?style=flat-square&color=success">
@@ -59,11 +59,8 @@ Include via CDN(e.g. unpkg) or Download a copy
 ```html
 <arc-ball>
     <!-- built-in stl renderer -->
-    <arc-ball-stl></arc-ball-stl>
+    <arc-ball-stl src="/* stl JSON */"></arc-ball-stl>
 </arc-ball>
-<script>
-    $('arc-ball-stl').install(/* stl data */);
-</script>
 ```
 
 <details>
