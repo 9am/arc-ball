@@ -20,7 +20,7 @@ export const mat3Invert = (a) => {
     let b21 = a21 * a10 - a11 * a20;
     let det = a00 * b01 + a01 * b11 + a02 * b21;
     if (!det) {
-        return null;
+        return a;
     }
     det = 1.0 / det;
     const res = new Array(9);

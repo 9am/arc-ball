@@ -1,5 +1,5 @@
 .tagcloud {
-    --num: 32;
+    --num: 24;
     --r: 140px;
     position: relative;
     transform-style: preserve-3d;
@@ -25,7 +25,7 @@
 }
 
 .tag:hover {
-    background: hsl(100deg 60% 50%);
+    background: hsl(.2turn 60% 50%);
     opacity: 1;
 }
 
@@ -42,36 +42,3 @@
     --z: calc(var(--r) * cos(var(--phi)));
     transform: translate(-50%, -50%) translate3d(var(--x, 0), var(--y, 0), var(--z, 0)) var(--rotate3d-transpose, rotate(0));
 }
-
-li:nth-child(1) {--i: 1;}
-li:nth-child(2) {--i: 2;}
-li:nth-child(3) {--i: 3;}
-li:nth-child(4) {--i: 4;}
-li:nth-child(5) {--i: 5;}
-li:nth-child(6) {--i: 6;}
-li:nth-child(7) {--i: 7;}
-li:nth-child(8) {--i: 8;}
-li:nth-child(9) {--i: 9;}
-li:nth-child(10) {--i: 10;}
-li:nth-child(11) {--i: 11;}
-li:nth-child(12) {--i: 12;}
-li:nth-child(13) {--i: 13;}
-li:nth-child(14) {--i: 14;}
-li:nth-child(15) {--i: 15;}
-li:nth-child(16) {--i: 16;}
-li:nth-child(17) {--i: 17;}
-li:nth-child(18) {--i: 18;}
-li:nth-child(19) {--i: 19;}
-li:nth-child(20) {--i: 20;}
-li:nth-child(21) {--i: 21;}
-li:nth-child(22) {--i: 22;}
-li:nth-child(23) {--i: 23;}
-li:nth-child(24) {--i: 24;}
-li:nth-child(25) {--i: 25;}
-li:nth-child(26) {--i: 26;}
-li:nth-child(27) {--i: 27;}
-li:nth-child(28) {--i: 28;}
-li:nth-child(29) {--i: 29;}
-li:nth-child(30) {--i: 30;}
-li:nth-child(31) {--i: 31;}
-li:nth-child(32) {--i: 32;}

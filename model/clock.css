@@ -1,0 +1,122 @@
+.clock {
+    --size: 200px;
+    --thickness: 30px;
+    --surface-num: 24;
+    --surface-size: calc(var(--size) * 3.1415926 / var(--surface-num));
+    --case-color: hsl(0.2turn 60% 45% / .2);
+    --hand-color: hsl(0.2turn 0% 0% / .6);
+    --stroke-color: hsl(0.2turn 60% 45% / 1);
+    --stroke-width: 1px;
+    position: relative;
+    width: var(--size);
+    aspect-ratio: 1;
+    transform-style: preserve-3d;
+    & * {
+        transform-style: preserve-3d;
+    }
+}
+
+.case, .dail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.case {
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        line-height: var(--size);
+        border-radius: 50%;
+        border: var(--stroke-width) solid var(--stroke-color);
+        background: var(--case-color);
+    }
+    &::before {
+        transform: translate3d(0, 0, calc(var(--thickness) / 2));
+    }
+    &::after {
+        transform: translate3d(0, 0, calc(var(--thickness) / -2));
+    }
+    & li {
+        --rotation: calc(var(--i) * 360deg / var(--surface-num));
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: var(--thickness);
+        height: var(--surface-size);
+        transform: translate3d(-50%, -50%, 0) rotateY(90deg) rotateX(var(--rotation)) translateZ(calc(var(--size) / 2));
+        border: var(--stroke-width) solid var(--stroke-color);
+        background: var(--case-color);
+    }
+}
+
+
+
+.dail {
+    transform: rotateZ(-90deg);
+    & li {
+        --rotation: 0deg;
+        background: var(--hand-color);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: calc(var(--size) / 2.5);
+        height: calc(var(--thickness) / 2);
+        min-height: 5px;
+        border-radius: 5px;
+        transform-origin: left center;
+        transform: translateY(-50%) rotateZ(var(--rotation));
+    }
+    & .hour {
+        --rotation: -90deg;
+        animation: 12s linear 2s infinite hour-move;
+    }
+    & .minute {
+        --rotation: 0deg;
+        animation: 2s linear 2s infinite minute-move;
+    }
+}
+
+.hour,
+.minute {
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        background: var(--hand-color);
+    }
+    &::before {
+        transform: rotateX(60deg);
+    }
+    &::after {
+        transform: rotateX(-60deg);
+    }
+}
+
+@keyframes hour-move {
+    from {
+        transform: translateY(-50%) rotateZ(-90deg);
+    }
+    to {
+        transform: translateY(-50%) rotateZ(270deg);
+    }
+}
+@keyframes minute-move {
+    from {
+        transform: translateY(-50%) rotateZ(0deg);
+    }
+    to {
+        transform: translateY(-50%) rotateZ(360deg);
+    }
+}

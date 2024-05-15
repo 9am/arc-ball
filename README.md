@@ -25,10 +25,11 @@ Inspired by wonderful demos[^1] made by Bartosz Ciechanowski, and a great paper[
 Go to the [Home page](https://9am.github.io/arc-ball/).
 
 <img width="32%" alt="arc-ball-demo-0" src="https://github.com/9am/arc-ball/assets/1435457/b7b86f36-229f-4a0b-a8a7-17d699b49e79" />
-<img width="32%" alt="arc-ball-demo-2" src="https://github.com/9am/arc-ball/assets/1435457/f317ecd2-b6e0-43ff-8f74-8ab6e878b321" />
-<img width="32%" alt="arc-ball-demo-1" src="https://github.com/9am/arc-ball/assets/1435457/66f0ed72-934e-40d0-8f7d-f67140cdfde8" />
 <img width="32%" alt="arc-ball-demo-3" src="https://github.com/9am/arc-ball/assets/1435457/18164a91-254c-4a88-9f3d-e4d0101e15d2" />
 <img width="32%" alt="arc-ball-demo-4" src="https://github.com/9am/arc-ball/assets/1435457/fe8eac0f-db47-4f2c-a46a-e55ad6146010" />
+<img width="32%" alt="arc-ball-demo-2" src="https://github.com/9am/arc-ball/assets/1435457/f317ecd2-b6e0-43ff-8f74-8ab6e878b321" />
+<img width="32%" alt="arc-ball-demo-1" src="https://github.com/9am/arc-ball/assets/1435457/66f0ed72-934e-40d0-8f7d-f67140cdfde8" />
+<img width="32%" alt="arc-ball-demo-5" src="https://github.com/9am/arc-ball/assets/1435457/eec3250f-471f-47b2-8cd6-c39057e1f567" />
 
 ## Usage
 

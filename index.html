@@ -7,7 +7,7 @@
     <link rel="icon" href="./logo.svg" type="image/svg+xml">
     <title>&lt;arc-ball&gt;</title>
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -27,6 +27,9 @@
             text-align: center;
             background: whitesmoke;
         }
+        a:first-child {
+            justify-self: center;
+        }
         arc-ball:not([slot]) {
             position: relative;
             border: 2px solid;
@@ -34,6 +37,20 @@
             display: grid;
             place-content: center;
             perspective: 400px;
+        }
+        arc-ball[slot=escape] {
+            pointer-events: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 50%;
+            border: unset;
+            --size: 100px;
+        }
+        arc-ball-stl#link {
+            --hs: 0.2turn 40%;
         }
 
         h3 {
@@ -57,61 +74,33 @@
             aspect-ratio: 1;
             transform-style: preserve-3d;
         }
-        .face {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            backface-visibility: inherit;
-            font-size: calc(var(--size) / 2);
-            color: white;
-        }
-        .front {
-            background: rgba(90, 90, 90, .7);
-            transform: translateZ(var(--size-h));
-        }
-        .back {
-            background: rgba(0, 210, 0, .7);
-            transform: rotateY(180deg) translateZ(var(--size-h));
-        }
-        .right {
-            background: rgba(210, 0, 0, .7);
-            transform: rotateY(90deg) translateZ(var(--size-h));
-        }
-        .left {
-            background: rgba(0, 0, 210, .7);
-            transform: rotateY(-90deg) translateZ(var(--size-h));
-        }
-        .top {
-            background: rgba(210, 210, 0, .7);
-            transform: rotateX(90deg) translateZ(var(--size-h));
-        }
-        .bottom {
-            background: rgba(210, 0, 210, .7);
-            transform: rotateX(-90deg) translateZ(var(--size-h));
-        }
-        arc-ball[slot=escape] {
-            pointer-events: none;
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border-radius: 50%;
-            border: unset;
-            --size: 100px;
-        }
-        @media screen and (max-width: 960px) {
-            body {
-                --gap: 3em;
-            }
-            arc-ball:not([slot]) {
-                margin-bottom: var(--gap);
-            }
-        }
+
+        li:nth-child(1) {--i: 1;}
+        li:nth-child(2) {--i: 2;}
+        li:nth-child(3) {--i: 3;}
+        li:nth-child(4) {--i: 4;}
+        li:nth-child(5) {--i: 5;}
+        li:nth-child(6) {--i: 6;}
+        li:nth-child(7) {--i: 7;}
+        li:nth-child(8) {--i: 8;}
+        li:nth-child(9) {--i: 9;}
+        li:nth-child(10) {--i: 10;}
+        li:nth-child(11) {--i: 11;}
+        li:nth-child(12) {--i: 12;}
+        li:nth-child(13) {--i: 13;}
+        li:nth-child(14) {--i: 14;}
+        li:nth-child(15) {--i: 15;}
+        li:nth-child(16) {--i: 16;}
+        li:nth-child(17) {--i: 17;}
+        li:nth-child(18) {--i: 18;}
+        li:nth-child(19) {--i: 19;}
+        li:nth-child(20) {--i: 20;}
+        li:nth-child(21) {--i: 21;}
+        li:nth-child(22) {--i: 22;}
+        li:nth-child(23) {--i: 23;}
+        li:nth-child(24) {--i: 24;}
     </style>
+    <link href="./model/clock.css" rel="stylesheet" />
     <link href="./model/tagcloud.css" rel="stylesheet" />
     <link href="./model/eyeball.css" rel="stylesheet" />
 </head>
@@ -123,13 +112,37 @@
         <arc-ball-axis></arc-ball-axis>
     </arc-ball>
     <arc-ball>
-        <section class="box">
-          <div class="face front">1</div>
-          <div class="face back">2</div>
-          <div class="face right">3</div>
-          <div class="face left">4</div>
-          <div class="face top">5</div>
-          <div class="face bottom">6</div>
+        <section class="clock">
+            <ol class="dail">
+              <li class="hour"></li>
+              <li class="minute"></li>
+            </ol>
+            <ol class="case">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ol>
         </section>
         <arc-ball slot="escape">
             <arc-ball-axis></arc-ball-axis>
@@ -137,14 +150,6 @@
     </arc-ball>
     <arc-ball>
         <ol class="tagcloud">
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
-          <li class="tag"></li>
           <li class="tag"></li>
           <li class="tag"></li>
           <li class="tag"></li>
@@ -195,6 +200,12 @@
     </arc-ball>
     <arc-ball>
         <arc-ball-stl src="./model/sphericon.json"></arc-ball-stl>
+        <arc-ball slot="escape">
+            <arc-ball-axis></arc-ball-axis>
+        </arc-ball>
+    </arc-ball>
+    <arc-ball>
+        <arc-ball-stl src="./model/link.json" id="link"></arc-ball-stl>
         <arc-ball slot="escape">
             <arc-ball-axis></arc-ball-axis>
         </arc-ball>

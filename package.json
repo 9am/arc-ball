@@ -1,6 +1,6 @@
 {
   "name": "@9am/arc-ball",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A small Web Component enables arcball 3D view for everything inside.",
   "keywords": [
     "arcball",

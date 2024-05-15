@@ -287,8 +287,8 @@ class BallSTL extends HTMLElement {
             }
             .tri {
                 display: block;
-                width: var(--w, 10px);
-                height: var(--h, 10px);
+                width: var(--w, 1px);
+                height: var(--h, 1px);
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -297,7 +297,9 @@ class BallSTL extends HTMLElement {
                 transform: translateX(calc(var(--originX) * -1)) var(--matrix3d);
                 clip-path: var(--clip, unset);
                 transform-style: preserve-3d;
-                background: hsl(0 0% calc(var(--light) * 100%) / 1);
+                background: hsl(var(--hs, 0 0%) calc(var(--light) * 100%));
+                content-visibility: auto;
+                contain-intrinsic-size: var(--w, 1px) var(--h, 1px);
             }
         `;
     }
