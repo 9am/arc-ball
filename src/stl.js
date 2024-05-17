@@ -93,7 +93,7 @@ const invert = (root, mat3) => {
     ];
 };
 
-export const createTriangle = (points = [], normal, debug = false) => {
+export const createTriangle = (points = [], normal) => {
     // move root to 0
     const [root] = points;
     const [rx, ry, rz] = root;
@@ -121,13 +121,6 @@ export const createTriangle = (points = [], normal, debug = false) => {
         c2x = 0;
     }
     const clip = `polygon(${c0x}% 0, ${c1x}% 0, ${c2x}% 100%)`;
-
-    if (debug) {
-        document.querySelectorAll('.dot').forEach((dot, i) => {
-            const [x, y, z] = xyPoints[i];
-            dot.style.setProperty('--position', `translate3d(${x}px, ${y}px, ${z}px)`);
-        });
-    }
 
     // light
     const light = Math.acos(vecDot(nor, LIGHT)) / Math.PI;

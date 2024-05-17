@@ -5,8 +5,13 @@
     transform-style: preserve-3d;
     counter-reset: index;
 }
-
-.tag {
+.tagcloud li {
+    --phi: acos((2 * var(--i) - 1) / var(--num) - 1);
+    --theta: calc(sqrt(var(--num) * pi) * var(--phi));
+    --x: calc(var(--r) * cos(var(--theta)) * sin(var(--phi)));
+    --y: calc(var(--r) * sin(var(--theta)) * sin(var(--phi)));
+    --z: calc(var(--r) * cos(var(--phi)));
+    transform: translate(-50%, -50%) translate3d(var(--x, 0), var(--y, 0), var(--z, 0)) var(--rotate3d-transpose, rotate(0));
     position: absolute;
     top: 50%;
     left: 50%;
@@ -23,22 +28,11 @@
     opacity: .9;
     transition: background 200ms;
 }
-
-.tag:hover {
+.tagcloud li:hover {
     background: hsl(.2turn 60% 50%);
     opacity: 1;
 }
-
-.tag::after {
+.tagcloud li::after {
     counter-increment: index 1;
     content: counter(index, decimal-leading-zero);
-}
-
-.tag {
-    --phi: acos((2 * var(--i) - 1) / var(--num) - 1);
-    --theta: calc(sqrt(var(--num) * pi) * var(--phi));
-    --x: calc(var(--r) * cos(var(--theta)) * sin(var(--phi)));
-    --y: calc(var(--r) * sin(var(--theta)) * sin(var(--phi)));
-    --z: calc(var(--r) * cos(var(--phi)));
-    transform: translate(-50%, -50%) translate3d(var(--x, 0), var(--y, 0), var(--z, 0)) var(--rotate3d-transpose, rotate(0));
 }

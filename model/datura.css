@@ -1,0 +1,28 @@
+.datura {
+    --num: 24;
+    --p: calc(100% / var(--num));
+    display: grid;
+    place-items: stretch;
+    width: 300px;
+    aspect-ratio: 1;
+    transform-style: preserve-3d;
+    animation: 6s linear infinite reverse windmill;
+}
+.datura li {
+    --n: calc(var(--i) - 1);
+    --start: calc(var(--n) * var(--p));
+    --end: calc(var(--start) + var(--p) - 1%);
+    --angle: calc(0.5turn / var(--num) * var(--n));
+    --color: hsl(var(--angle) 40% 60% / .6);
+    grid-area: 1 / 1;
+    background: radial-gradient(closest-side at center, transparent var(--start), var(--color) var(--start), var(--color) var(--end), transparent var(--end));
+    transform: rotateY(var(--angle));
+}
+@keyframes windmill {
+    from {
+        transform: rotateY(0turn);
+    }
+    to {
+        transform: rotateY(1turn);
+    }
+}

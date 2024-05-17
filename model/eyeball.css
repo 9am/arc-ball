@@ -9,7 +9,7 @@
     position: relative;
     transform-style: preserve-3d;
 }
-.slice {
+.eyeball li {
     --offset: calc((180deg - var(--stop)) / var(--num));
     --deg: calc(var(--stop) + var(--offset) * var(--i));
     width: 100%;
@@ -19,12 +19,11 @@
     background: var(--color);
     transform: translateZ(calc(cos(var(--deg)) * var(--size-h))) scale(sin(var(--deg)));
     border-radius: 50%;
-    backslice-visibility: inherit;
 }
-.slice:nth-child(odd) {
+.eyeball li:nth-child(odd) {
     background: white;
 }
-.slice:last-child {
+.eyeball li:last-child {
     --i: -1;
     filter: drop-shadow(0 0 10px var(--color));
     transform: translateZ(calc(cos(var(--deg)) * var(--size-h))) scale(sin(var(--deg)))
